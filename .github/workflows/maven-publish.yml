@@ -1,0 +1,42 @@
+name: Main
+
+on: push
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up JDK 8
+        uses: actions/setup-java@v3
+        with:
+          java-version: '8'
+          distribution: 'temurin'
+          server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
+          settings-path: ${{ github.workspace }} # location for the settings.xml file
+
+      - name: set values
+        id: set-values
+        run: |
+          if [[ "$REF" == refs/tags/v* ]]; then
+            echo "version=${REF/refs\/tags\/v/}" >> $GITHUB_OUTPUT
+          else
+            echo "version=1.0-SNAPSHOT" >> $GITHUB_OUTPUT
+          fi
+        env:
+          REF: ${{ github.ref }}
+
+      - name: Build with Maven
+        run: mvn -B -Drevision=$VERSION package --file pom.xml
+        env:
+          VERSION: ${{ steps.set-values.outputs.version }}
+
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/v')
+        with:
+          files: 'target/keycloak-spi-trusted-device-*.jar'

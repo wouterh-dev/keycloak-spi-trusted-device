@@ -3,13 +3,13 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>org.example</groupId>
+  <groupId>com.github.wouterh-dev</groupId>
   <artifactId>keycloak-spi-trusted-device</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>${revision}</version>
   <packaging>jar</packaging>
 
   <name>keycloak-spi-trusted-device</name>
-  <url>http://maven.apache.org</url>
+  <url>https://github.com/wouterh-dev/keycloak-spi-trusted-device</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -95,4 +95,12 @@
       </plugin>
     </plugins>
   </build>
+
+  <distributionManagement>
+    <repository>
+      <id>github</id>
+      <name>GitHub Packages</name>
+      <url>https://maven.pkg.github.com/wouterh-dev/keycloak-spi-trusted-device</url>
+    </repository>
+  </distributionManagement>
 </project>
