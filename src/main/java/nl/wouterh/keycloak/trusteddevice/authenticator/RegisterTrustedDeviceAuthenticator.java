@@ -22,6 +22,7 @@ import org.keycloak.authentication.Authenticator;
 import org.keycloak.common.util.Time;
 import org.keycloak.credential.CredentialModel;
 import org.keycloak.credential.CredentialProvider;
+import org.keycloak.models.AuthenticatorConfigModel;
 import org.keycloak.models.KeycloakSession;
 import org.keycloak.models.RealmModel;
 import org.keycloak.models.UserModel;
@@ -67,9 +68,15 @@ public class RegisterTrustedDeviceAuthenticator implements Authenticator {
       return;
     }
 
-    Map<String, String> config = context.getAuthenticatorConfig().getConfig();
-    Duration duration = Strings.isNullOrEmpty(config.get(CONF_DURATION)) ? null
-        : Duration.parse(config.get(CONF_DURATION));
+    Duration duration = null;
+
+    AuthenticatorConfigModel authenticatorConfig = context.getAuthenticatorConfig();
+    if (authenticatorConfig != null) {
+      Map<String, String> config = authenticatorConfig.getConfig();
+      if (config != null && !Strings.isNullOrEmpty(config.get(CONF_DURATION))) {
+        duration = Duration.parse(config.get(CONF_DURATION));
+      }
+    }
 
     MultivaluedMap<String, String> formParameters = context.getHttpRequest()
         .getDecodedFormParameters();
