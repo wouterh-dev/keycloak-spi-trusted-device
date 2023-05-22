@@ -1,0 +1,33 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:14
+    restart: on-failure
+    environment:
+      - POSTGRES_DB=keycloak
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - "postgres:/var/lib/postgresql/data"
+  keycloak:
+    build: .
+    restart: on-failure
+    command: [
+      "start-dev",
+      "--http-port", "8680"
+    ]
+    environment:
+      - KC_DB=postgres
+      - KC_DB_USERNAME=postgres
+      - KC_DB_PASSWORD=postgres
+      - KC_HOSTNAME=localhost
+      - KC_DB_URL=jdbc:postgresql://postgres/keycloak
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin
+      - JAVA_OPTS_APPEND=-agentlib:jdwp=transport=dt_socket,server=y,address=0.0.0.0:8681,suspend=n
+    ports:
+      - "8680:8680"
+      - "8681:8681"
+volumes:
+  postgres:
