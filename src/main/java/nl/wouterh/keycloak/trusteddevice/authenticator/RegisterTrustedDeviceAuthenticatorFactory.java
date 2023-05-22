@@ -56,9 +56,9 @@ public class RegisterTrustedDeviceAuthenticatorFactory implements AuthenticatorF
     duration.setType(ProviderConfigProperty.STRING_TYPE);
     duration.setName(CONF_DURATION);
     duration.setLabel("Trust duration");
-    duration.setDefaultValue("P90d");
+    duration.setDefaultValue("");
     duration.setHelpText(
-        "Duration the device will be trusted. Input format is a Java Duration, for example P365d or PT24h");
+        "Duration the device will be trusted. Input format is a Java Duration, for example P365d or PT24h. Empty value means forever.");
 
     return Arrays.asList(duration);
   }
