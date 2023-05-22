@@ -66,7 +66,7 @@ public class TrustedDeviceConditionFactory implements
     negateOutput.setType(ProviderConfigProperty.BOOLEAN_TYPE);
     negateOutput.setName(CONF_NEGATE);
     negateOutput.setLabel("Negate output");
-    negateOutput.setDefaultValue("true");
+    negateOutput.setDefaultValue(Boolean.toString(true));
     negateOutput.setHelpText(
         "Apply a NOT to the check result. When this is true, then the condition will evaluate to true just if user does NOT have a trusted device. When this is false, the condition will evaluate to true just if user has a trusted device");
 

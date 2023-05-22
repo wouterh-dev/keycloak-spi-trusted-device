@@ -68,7 +68,7 @@ public class CredentialConfiguredConditionFactory implements
     negateOutput.setType(ProviderConfigProperty.BOOLEAN_TYPE);
     negateOutput.setName(CONF_NEGATE);
     negateOutput.setLabel("Negate output");
-    negateOutput.setDefaultValue(Boolean.toString(true));
+    negateOutput.setDefaultValue(Boolean.toString(false));
     negateOutput.setHelpText(
         "Apply a NOT to the check result. When this is true, then the condition will evaluate to true just if user does NOT have any of the authenticators configured. When this is false, the condition will evaluate to true if user has any of the configured authenticators");
 

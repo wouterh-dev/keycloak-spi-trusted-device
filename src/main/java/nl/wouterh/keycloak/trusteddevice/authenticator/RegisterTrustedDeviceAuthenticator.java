@@ -71,7 +71,7 @@ public class RegisterTrustedDeviceAuthenticator implements Authenticator {
     Duration duration = Strings.isNullOrEmpty(config.get(CONF_DURATION)) ? null
         : Duration.parse(config.get(CONF_DURATION));
 
-    MultivaluedMap<String, String> formParameters = session.getContext().getHttpRequest()
+    MultivaluedMap<String, String> formParameters = context.getHttpRequest()
         .getDecodedFormParameters();
 
     boolean trustedDevice = "yes".equals(formParameters.getFirst("trusted-device"));
