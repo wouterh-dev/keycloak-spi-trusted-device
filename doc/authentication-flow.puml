@@ -1,0 +1,27 @@
+@startuml
+start
+
+if (User has 2FA configured?) then (yes)
+  if (User is using trusted device?) then (no)
+    :Prompt 2FA;
+    if ({{
+      salt
+      {+
+        Trust this device?
+        [Yes] | [No]
+      }
+    }}) then (yes)
+      :Generate unique device secret;
+      :Set KEYCLOAK_TRUSTED_DEVICE cookie;
+    else (no)
+      stop
+    endif
+  else (yes)
+    stop
+  endif
+else (no)
+  stop
+endif
+
+stop
+@enduml
