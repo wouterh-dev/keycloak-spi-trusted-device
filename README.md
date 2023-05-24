@@ -30,3 +30,11 @@ as such:
 
 Following the above example the user would be prompted for a second factor every 90 days on each
 device.
+
+During login the user will be prompted if they want to trust the device:
+
+![](doc/login-trust-device.png)
+
+They can then manage their trusted devices on the account console:
+
+![](doc/account-console.png)
