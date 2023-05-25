@@ -50,12 +50,13 @@ public class TrustedDeviceToken extends JsonWebToken {
         maxAge,
         secure,
         true,
-        sameSiteValue
+        sameSiteValue,
+        session
     );
   }
 
   public static TrustedDeviceToken getCookie(KeycloakSession session) {
-    Set<String> cookieValues = CookieHelper.getCookieValue(COOKIE_NAME);
+    Set<String> cookieValues = CookieHelper.getCookieValue(session, COOKIE_NAME);
     long time = Time.currentTime();
 
     for (String cookieValue : cookieValues) {
