@@ -17,7 +17,6 @@ import org.keycloak.models.KeycloakSession;
 import org.keycloak.models.RealmModel;
 import org.keycloak.models.UserModel;
 import org.keycloak.representations.JsonWebToken;
-import org.keycloak.services.util.CookieHelper;
 
 @Getter
 @Setter
@@ -41,7 +40,7 @@ public class TrustedDeviceToken extends JsonWebToken {
 
     ServerCookie.SameSiteAttributeValue sameSiteValue =
         secure ? ServerCookie.SameSiteAttributeValue.NONE : null;
-    CookieHelper.addCookie(
+    CompatCookieHelper.addCookie(
         COOKIE_NAME,
         value,
         path,
@@ -56,7 +55,7 @@ public class TrustedDeviceToken extends JsonWebToken {
   }
 
   public static TrustedDeviceToken getCookie(KeycloakSession session) {
-    Set<String> cookieValues = CookieHelper.getCookieValue(session, COOKIE_NAME);
+    Set<String> cookieValues = CompatCookieHelper.getCookieValue(session, COOKIE_NAME);
     long time = Time.currentTime();
 
     for (String cookieValue : cookieValues) {

@@ -39,4 +39,4 @@ jobs:
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/v')
         with:
-          files: 'target/keycloak-spi-trusted-device-*.jar'
+          files: 'spi/target/keycloak-spi-trusted-device-*.jar'

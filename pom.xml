@@ -4,9 +4,14 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.github.wouterh-dev</groupId>
-  <artifactId>keycloak-spi-trusted-device</artifactId>
+  <artifactId>keycloak-spi-trusted-device-parent</artifactId>
   <version>${revision}</version>
-  <packaging>jar</packaging>
+  <packaging>pom</packaging>
+
+  <modules>
+    <module>spi</module>
+    <module>compat-kc20</module>
+  </modules>
 
   <name>keycloak-spi-trusted-device</name>
   <url>https://github.com/wouterh-dev/keycloak-spi-trusted-device</url>
@@ -35,31 +40,42 @@
       <version>${auto-service.version}</version>
       <scope>provided</scope>
     </dependency>
-    <dependency>
-      <groupId>org.keycloak</groupId>
-      <artifactId>keycloak-core</artifactId>
-      <version>${keycloak.version}</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.keycloak</groupId>
-      <artifactId>keycloak-services</artifactId>
-      <version>${keycloak.version}</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.keycloak</groupId>
-      <artifactId>keycloak-model-jpa</artifactId>
-      <version>${keycloak.version}</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.keycloak</groupId>
-      <artifactId>keycloak-server-spi</artifactId>
-      <version>${keycloak.version}</version>
-      <scope>provided</scope>
-    </dependency>
   </dependencies>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.projectlombok</groupId>
+        <artifactId>lombok</artifactId>
+        <version>${lombok.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.google.auto.service</groupId>
+        <artifactId>auto-service-annotations</artifactId>
+        <version>${auto-service.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.keycloak</groupId>
+        <artifactId>keycloak-core</artifactId>
+        <version>${keycloak.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.keycloak</groupId>
+        <artifactId>keycloak-services</artifactId>
+        <version>${keycloak.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.keycloak</groupId>
+        <artifactId>keycloak-model-jpa</artifactId>
+        <version>${keycloak.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.keycloak</groupId>
+        <artifactId>keycloak-server-spi</artifactId>
+        <version>${keycloak.version}</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
 
   <build>
     <plugins>
