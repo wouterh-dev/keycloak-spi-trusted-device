@@ -1,7 +1,7 @@
 package nl.wouterh.keycloak.trusteddevice.util;
 
 import java.util.Set;
-import javax.ws.rs.core.UriBuilder;
+import jakarta.ws.rs.core.UriBuilder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

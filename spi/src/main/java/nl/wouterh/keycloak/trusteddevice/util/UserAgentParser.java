@@ -1,6 +1,6 @@
 package nl.wouterh.keycloak.trusteddevice.util;
 
-import javax.ws.rs.core.HttpHeaders;
+import jakarta.ws.rs.core.HttpHeaders;
 import org.keycloak.models.KeycloakSession;
 import ua_parser.Client;
 import ua_parser.Parser;
