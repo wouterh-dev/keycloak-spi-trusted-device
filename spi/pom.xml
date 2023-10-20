@@ -16,11 +16,6 @@
 
   <dependencies>
     <dependency>
-      <groupId>com.github.wouterh-dev</groupId>
-      <artifactId>compat-kc20</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
       <groupId>org.keycloak</groupId>
       <artifactId>keycloak-core</artifactId>
       <scope>provided</scope>

@@ -1,7 +1,7 @@
 package nl.wouterh.keycloak.trusteddevice.util;
 
-import java.util.Set;
 import jakarta.ws.rs.core.UriBuilder;
+import java.util.Set;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,6 +17,7 @@ import org.keycloak.models.KeycloakSession;
 import org.keycloak.models.RealmModel;
 import org.keycloak.models.UserModel;
 import org.keycloak.representations.JsonWebToken;
+import org.keycloak.services.util.CookieHelper;
 
 @Getter
 @Setter
@@ -40,7 +41,7 @@ public class TrustedDeviceToken extends JsonWebToken {
 
     ServerCookie.SameSiteAttributeValue sameSiteValue =
         secure ? ServerCookie.SameSiteAttributeValue.NONE : null;
-    CompatCookieHelper.addCookie(
+    CookieHelper.addCookie(
         COOKIE_NAME,
         value,
         path,
@@ -55,7 +56,7 @@ public class TrustedDeviceToken extends JsonWebToken {
   }
 
   public static TrustedDeviceToken getCookie(KeycloakSession session) {
-    Set<String> cookieValues = CompatCookieHelper.getCookieValue(session, COOKIE_NAME);
+    Set<String> cookieValues = CookieHelper.getCookieValue(session, COOKIE_NAME);
     long time = Time.currentTime();
 
     for (String cookieValue : cookieValues) {
