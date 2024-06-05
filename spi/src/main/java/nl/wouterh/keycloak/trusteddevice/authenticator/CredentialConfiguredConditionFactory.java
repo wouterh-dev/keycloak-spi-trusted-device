@@ -63,6 +63,7 @@ public class CredentialConfiguredConditionFactory implements
     authTypes.setLabel("Authenticator types");
     authTypes.setHelpText(
         "Condition matches if one of the user has one of the authenticator types configured");
+    authTypes.setDefaultValue("otp");
 
     ProviderConfigProperty negateOutput = new ProviderConfigProperty();
     negateOutput.setType(ProviderConfigProperty.BOOLEAN_TYPE);

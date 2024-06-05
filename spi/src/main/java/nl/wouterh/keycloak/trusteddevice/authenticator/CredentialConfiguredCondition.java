@@ -22,11 +22,17 @@ public class CredentialConfiguredCondition implements ConditionalAuthenticator {
     if (authConfig != null && authConfig.getConfig() != null) {
       boolean negateOutput = Boolean.parseBoolean(
           authConfig.getConfig().get(CredentialConfiguredConditionFactory.CONF_NEGATE));
-      String[] authenticatorNames = Constants.CFG_DELIMITER_PATTERN.split(
-          authConfig.getConfig().get(CredentialConfiguredConditionFactory.CONF_AUTH));
-      boolean hasAuthenticator = Arrays.stream(authenticatorNames)
-          .anyMatch(authenticator -> context.getUser().credentialManager()
-              .isConfiguredFor(authenticator));
+      boolean hasAuthenticator = false;
+
+      String authenticatorNamesStr = authConfig.getConfig()
+          .get(CredentialConfiguredConditionFactory.CONF_AUTH);
+      if (authenticatorNamesStr != null) {
+        String[] authenticatorNames = Constants.CFG_DELIMITER_PATTERN.split(
+            authenticatorNamesStr);
+        hasAuthenticator = Arrays.stream(authenticatorNames)
+            .anyMatch(authenticator -> context.getUser().credentialManager()
+                .isConfiguredFor(authenticator));
+      }
 
       return hasAuthenticator != negateOutput;
     }
