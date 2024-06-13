@@ -1,15 +1,5 @@
 package nl.wouterh.keycloak.trusteddevice.util;
 
-import jakarta.ws.rs.core.NewCookie;
-import jakarta.ws.rs.core.UriBuilder;
-import jakarta.ws.rs.core.NewCookie.SameSite;
-import jakarta.ws.rs.core.Cookie;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import nl.wouterh.keycloak.trusteddevice.credential.TrustedDeviceCredentialModel;
-import nl.wouterh.keycloak.trusteddevice.credential.TrustedDeviceCredentialProvider;
-import nl.wouterh.keycloak.trusteddevice.credential.TrustedDeviceCredentialProviderFactory;
 import org.keycloak.TokenCategory;
 import org.keycloak.common.ClientConnection;
 import org.keycloak.common.util.Time;
@@ -18,6 +8,17 @@ import org.keycloak.models.KeycloakSession;
 import org.keycloak.models.RealmModel;
 import org.keycloak.models.UserModel;
 import org.keycloak.representations.JsonWebToken;
+
+import jakarta.ws.rs.core.Cookie;
+import jakarta.ws.rs.core.NewCookie;
+import jakarta.ws.rs.core.NewCookie.SameSite;
+import jakarta.ws.rs.core.UriBuilder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import nl.wouterh.keycloak.trusteddevice.credential.TrustedDeviceCredentialModel;
+import nl.wouterh.keycloak.trusteddevice.credential.TrustedDeviceCredentialProvider;
+import nl.wouterh.keycloak.trusteddevice.credential.TrustedDeviceCredentialProviderFactory;
 
 @Getter
 @Setter
@@ -50,7 +51,13 @@ public class TrustedDeviceToken extends JsonWebToken {
     session.getContext().getHttpResponse().setCookieIfAbsent(newCookie);
   }
 
-  public static TrustedDeviceToken getCookie(KeycloakSession session) {
+  /**
+   * Retrieves the TrustedDeviceToken from the session cookie.
+   *
+   * @param session The KeycloakSession object.
+   * @return The TrustedDeviceToken object if the cookie exists and is valid, otherwise null.
+   */
+  private static TrustedDeviceToken getCookie(KeycloakSession session) {
     Cookie cookie = session.getContext().getRequestHeaders().getCookies().get(COOKIE_NAME);
     long time = Time.currentTime();
 
@@ -66,8 +73,17 @@ public class TrustedDeviceToken extends JsonWebToken {
     return null;
   }
 
+  /**
+   * Retrieves the trusted device credential from the cookie.
+   *
+   * @param session the Keycloak session
+   * @param realm the realm model
+   * @param user the user model
+   * @return the trusted device credential, or null if not found or invalid
+   */
   public static TrustedDeviceCredentialModel getCredentialFromCookie(KeycloakSession session,
       RealmModel realm, UserModel user) {
+
     TrustedDeviceToken deviceToken = getCookie(session);
     TrustedDeviceCredentialProvider trustedDeviceCredentialProvider = (TrustedDeviceCredentialProvider) session
         .getProvider(CredentialProvider.class, TrustedDeviceCredentialProviderFactory.PROVIDER_ID);
