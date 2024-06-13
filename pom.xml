@@ -24,6 +24,9 @@
     <reproducible-build-maven-plugin.version>0.16</reproducible-build-maven-plugin.version>
     <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
     <auto-service.version>1.0.1</auto-service.version>
+    <junit-jupiter.version>5.10.2</junit-jupiter.version>
+    <mockito-core.version>5.12.0</mockito-core.version>
+    <uap-java.version>1.6.1</uap-java.version>
   </properties>
 
   <dependencies>
@@ -38,6 +41,33 @@
       <artifactId>auto-service-annotations</artifactId>
       <version>${auto-service.version}</version>
       <scope>provided</scope>
+    </dependency>
+    
+    <!-- Testing -->
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter</artifactId>
+      <scope>test</scope>
+      <version>${junit-jupiter.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-params</artifactId>
+      <scope>test</scope>
+      <version>${junit-jupiter.version}</version>
+    </dependency>      
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <version>${mockito-core.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>com.github.ua-parser</groupId>
+      <artifactId>uap-java</artifactId>
+      <scope>provided</scope>
+      <version>${uap-java.version}</version>
     </dependency>
   </dependencies>
 
