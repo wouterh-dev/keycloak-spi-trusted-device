@@ -13,21 +13,23 @@
             </div>
           </div>
 
-          <script>
-            function inputName(e) {
-              const elem = document.querySelector("#kc-trusted-device-name");
-              const result = prompt("${msg("trusted-device-name")}", elem.value);
-              if (result === null) {
-                e.preventDefault();
-                return false;
+          <#if deviceNameRequired>
+            <script>
+              function inputName(e) {
+                const elem = document.querySelector("#kc-trusted-device-name");
+                const result = prompt("${msg("trusted-device-name")}", elem.value);
+                if (result === null) {
+                  e.preventDefault();
+                  return false;
+                }
+
+                elem.value = result;
               }
+            </script>
 
-              elem.value = result;
-            }
-          </script>
-
-          <input type="hidden" id="kc-trusted-device-name" name="trusted-device-name"
-                 value="${trustedDeviceName}"/>
+            <input type="hidden" id="kc-trusted-device-name" name="trusted-device-name"
+                   value="${trustedDeviceName!''}"/>
+          </#if>
 
           <div class="${properties.kcFormButtonsClass!}">
               <#if (auth?has_content && auth.showUsername() && !auth.showResetCredentials())>
@@ -37,8 +39,7 @@
                 class="${properties.kcButtonClass!} ${properties.kcButtonPrimaryClass!} ${properties.kcButtonBlockClass!} ${properties.kcButtonLargeClass!}"
                 name="trusted-device" id="kc-trusted-device-yes"
                 type="submit"
-                value="yes"
-                onclick="inputName(event)">
+                value="yes"<#if deviceNameRequired> onclick="inputName(event)"</#if>>
                 ${msg("trusted-device-yes")}
             </button>
 

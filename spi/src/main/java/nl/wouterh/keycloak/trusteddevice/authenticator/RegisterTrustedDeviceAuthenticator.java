@@ -1,5 +1,6 @@
 package nl.wouterh.keycloak.trusteddevice.authenticator;
 
+import static nl.wouterh.keycloak.trusteddevice.authenticator.RegisterTrustedDeviceAuthenticatorFactory.CONF_DEVICE_NAME_REQUIRED;
 import static nl.wouterh.keycloak.trusteddevice.authenticator.RegisterTrustedDeviceAuthenticatorFactory.CONF_DURATION;
 
 import com.google.common.base.Strings;
@@ -54,9 +55,25 @@ public class RegisterTrustedDeviceAuthenticator implements Authenticator {
     } else {
       Response form = context.form()
           .setAttribute("trustedDeviceName", UserAgentParser.getDeviceName(session))
+          .setAttribute("deviceNameRequired", isDeviceNameRequired(context.getAuthenticatorConfig()))
           .createForm("trusted-device-register.ftl");
       context.challenge(form);
     }
+  }
+
+  private static boolean isDeviceNameRequired(AuthenticatorConfigModel authenticatorConfig) {
+    if (authenticatorConfig == null) {
+      return true;
+    }
+    Map<String, String> config = authenticatorConfig.getConfig();
+    if (config == null) {
+      return true;
+    }
+    String value = config.get(CONF_DEVICE_NAME_REQUIRED);
+    if (Strings.isNullOrEmpty(value)) {
+      return true;
+    }
+    return Boolean.parseBoolean(value);
   }
 
   @Override
@@ -80,13 +97,15 @@ public class RegisterTrustedDeviceAuthenticator implements Authenticator {
       }
     }
 
+    boolean deviceNameRequired = isDeviceNameRequired(authenticatorConfig);
+
     MultivaluedMap<String, String> formParameters = context.getHttpRequest()
         .getDecodedFormParameters();
 
     boolean trustedDevice = "yes".equals(formParameters.getFirst("trusted-device"));
     String deviceName = formParameters.getFirst("trusted-device-name");
 
-    if (trustedDevice && !Strings.isNullOrEmpty(deviceName)) {
+    if (trustedDevice && (!deviceNameRequired || !Strings.isNullOrEmpty(deviceName))) {
       TrustedDeviceCredentialProvider trustedDeviceCredentialProvider = (TrustedDeviceCredentialProvider) session.getProvider(
           CredentialProvider.class, TrustedDeviceCredentialProviderFactory.PROVIDER_ID);
 
@@ -95,14 +114,17 @@ public class RegisterTrustedDeviceAuthenticator implements Authenticator {
       secureRandom.nextBytes(bytes);
       String deviceId = Hex.encodeHexString(bytes);
 
-      // Expire the token in 1 year
       Long exp = null;
-      String credentialName = deviceName;
       if (duration != null) {
         exp = Time.currentTime() + duration.getSeconds();
+      }
 
-        credentialName = String.format("%s (Expires: %s)", deviceName,
-            formatter.format(Instant.ofEpochSecond(exp)));
+      String credentialName = null;
+      if (!Strings.isNullOrEmpty(deviceName)) {
+        credentialName = exp != null
+            ? String.format("%s (Expires: %s)", deviceName,
+                formatter.format(Instant.ofEpochSecond(exp)))
+            : deviceName;
       }
 
       Set<String> existingCredentials = user.credentialManager()

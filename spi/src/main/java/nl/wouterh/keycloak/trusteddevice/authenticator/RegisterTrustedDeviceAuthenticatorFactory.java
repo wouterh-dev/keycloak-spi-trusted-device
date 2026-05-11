@@ -16,6 +16,7 @@ import org.keycloak.provider.ProviderConfigProperty;
 public class RegisterTrustedDeviceAuthenticatorFactory implements AuthenticatorFactory {
 
   public static final String CONF_DURATION = "duration";
+  public static final String CONF_DEVICE_NAME_REQUIRED = "deviceNameRequired";
 
   public static final String PROVIDER_ID = "trusted-device-authenticator";
 
@@ -60,7 +61,15 @@ public class RegisterTrustedDeviceAuthenticatorFactory implements AuthenticatorF
     duration.setHelpText(
         "Duration the device will be trusted. Input format is a Java Duration, for example P365d or PT24h. Empty value means forever.");
 
-    return Arrays.asList(duration);
+    ProviderConfigProperty deviceNameRequired = new ProviderConfigProperty();
+    deviceNameRequired.setType(ProviderConfigProperty.BOOLEAN_TYPE);
+    deviceNameRequired.setName(CONF_DEVICE_NAME_REQUIRED);
+    deviceNameRequired.setLabel("Require device name");
+    deviceNameRequired.setDefaultValue("true");
+    deviceNameRequired.setHelpText(
+        "If enabled, the user is prompted to name the device and registration is skipped if the name is blank. If disabled, trusting the device is a single click and the parsed User-Agent (e.g. \"Chrome on Windows\") is used as the label; if the User-Agent can't be parsed, the credential is stored without a label.");
+
+    return Arrays.asList(duration, deviceNameRequired);
   }
 
   @Override
